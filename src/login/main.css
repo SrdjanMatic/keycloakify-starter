@@ -1,11 +1,3 @@
-body.kcBodyClass {
-    background: url(../assets/background.jpg) no-repeat center center fixed;
-    background-size: cover;
-    min-height: 100vh;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.kcFormHeaderClass {
+  border: 3px solid red;
 }
