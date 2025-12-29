@@ -1,3 +1,454 @@
+/* Dark theme colors and layout */
+:root {
+  --dark-bg: #08171e;
+  --card-bg: #132f4c;
+  --input-bg: #0c222c;
+  --text-primary: #08171e;
+  --text-secondary: #b0bec5;
+  --button-primary: #ffffff;
+  --button-hover: #7a8090;
+  --border-color: #ffffff;
+  --link-color: #40bbff;
+}
+
+body {
+  background-color: var(--dark-bg) !important;
+  color: var(--text-primary) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif !important;
+}
+
+a {
+  color: var(--link-color) !important;
+  text-decoration: none;
+}
+
+.kcLoginClass {
+  background-color: var(--dark-bg) !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding-top: 20px;
+}
+
+.kcHeaderClass {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+.kc-locale-top {
+  text-align: right;
+}
+
+.kc-locale-top select {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.kcFormCardClass {
+  background-color: transparent !important;
+  width: 100%;
+  max-width: 400px;
+  padding: 0;
+  box-shadow: none !important;
+  border: none !important;
+}
+
 .kcFormHeaderClass {
-  border: 3px solid red;
+  border: none !important;
+  text-align: left;
+  margin-bottom: 24px;
+  padding: 0;
+}
+
+.login-greeting {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
+}
+
+.login-subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin: 0 0 32px 0;
+}
+
+#kc-content-wrapper {
+  margin-top: 0;
+}
+
+#kc-form-wrapper {
+  padding: 0;
+}
+
+.kcFormGroupClass {
+  background: transparent;
+}
+.kcInputClass {
+  background: var(--input-bg);
+  border: 1px solid var(--input-bg);
+  border-radius: 8px;
+  font-family: Host Grotesk;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #f5f5f5;
+}
+
+.kcInputClass::placeholder {
+  margin-bottom: 20px;
+  font-family: Host Grotesk;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0%;
+  color: #f5f5f5;
+}
+
+.kcLabelClass {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 8px;
+  font-weight: 400;
+}
+
+.kcInputClass:focus {
+  outline: none;
+  border-color: var(--link-color);
+}
+
+.kcInputGroup {
+  position: relative;
+  width: 100%;
+}
+
+.kcFormPasswordVisibilityButtonClass {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+}
+
+/* Remember me and Forgot password */
+.form-options-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.remember-me-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.remember-me-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e3e3e3;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 0;
+  font-family: Host Grotesk;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+.remember-me-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  margin: 0;
+}
+
+.forgot-password-wrapper {
+  margin-left: auto;
+}
+
+.forgot-password-link {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-family: Host Grotesk;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 100%;
+  text-align: right;
+  color: #e3e3e3;
+}
+
+.forgot-password-link:hover {
+  opacity: 0.8;
+}
+
+.continue-button,
+.kcButtonClass.kcButtonPrimaryClass {
+  width: 100%;
+  height: 48px;
+  background-color: var(--button-primary) !important;
+  color: var(--text-primary) !important;
+  border: none !important;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.continue-button:hover,
+.kcButtonClass.kcButtonPrimaryClass:hover {
+  background-color: var(--button-hover) !important;
+}
+
+.continue-button:disabled,
+.kcButtonClass.kcButtonPrimaryClass:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Sign up */
+.signup-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.signup-text {
+  color: #f5f5f5;
+  font-size: 14px;
+  font-family: Host Grotesk;
+  font-weight: 700;
+  font-style: Bold;
+  line-height: 20px;
+}
+#kc-info-wrapper {
+  background-color: var(--dark-bg);
+}
+.pf-c-form-control[aria-invalid="true"] {
+  background-image: none;
+}
+.signup-link {
+  font-family: Host Grotesk;
+
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
+
+  color: var(--link-color);
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
+
+/* OR Divider */
+.or-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 24px 0;
+}
+
+.or-divider::before,
+.or-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.or-divider span {
+  padding: 0 16px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* Social Providers */
+#kc-social-providers {
+  margin-top: 20px;
+}
+
+.kcFormSocialAccountListClass {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.social-provider-item {
+  list-style: none;
+}
+
+.social-provider-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.social-provider-button:hover {
+  opacity: 0.9;
+}
+
+.social-provider-button i {
+  font-size: 20px;
+}
+
+.social-provider-text {
+  color: #000000;
+}
+
+/* Error messages */
+.kcInputErrorMessageClass {
+  display: block;
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.kcAlertClass {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.alert-error {
+  background-color: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.alert-success {
+  background-color: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.alert-warning {
+  background-color: rgba(255, 152, 0, 0.1);
+  border: 1px solid rgba(255, 152, 0, 0.3);
+}
+
+.alert-info {
+  background-color: rgba(33, 150, 243, 0.1);
+  border: 1px solid rgba(33, 150, 243, 0.3);
+}
+
+/* Hide elements we don't need */
+#kc-locale {
+  display: none;
+}
+
+.kcFormSocialAccountSectionClass hr,
+.kcFormSocialAccountSectionClass h2 {
+  display: none;
+}
+.headerCustom {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+.headerTitle {
+  font-family: Host Grotesk;
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 28px;
+  line-height: 36px;
+  letter-spacing: -2%;
+  color: #f5f5f5;
+}
+.headerDescription {
+  font-family: Host Grotesk;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: #e3e3e3;
+}
+.pf-c-input-group {
+  background-color: var(--input-bg);
+}
+.pf-c-button.pf-m-control {
+  color: #ffffff;
+  background-color: var(--input-bg);
+  --pf-c-button--after--BorderColor: var(--input-bg);
+  margin-right: -5px;
+}
+#rememberMe {
+  width: 12px;
+  height: 12px;
+  opacity: 1;
+  border-radius: 4px;
+  border-width: 0.5px;
+  border-color: #94a5ab;
+}
+#kc-form-options {
+  font-family: Host Grotesk;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 100%;
+}
+input[type="checkbox"] {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  border: 1.5px solid #94a5ab;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0;
+  position: relative;
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--link-color);
+  border-color: var(--link-color);
+}
+
+input[type="checkbox"]:checked::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 4px;
+  top: 0px;
+  width: 4px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.kcFormOptionsWrapperClass {
+  font-family: Host Grotesk;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 100%;
+  text-align: right;
+  color: #e3e3e3;
 }

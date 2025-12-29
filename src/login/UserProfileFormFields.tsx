@@ -15,7 +15,7 @@ import type { KcContext } from "./KcContext";
 import type { I18n } from "./i18n";
 
 export default function UserProfileFormFields(
-  props: UserProfileFormFieldsProps<KcContext, I18n>,
+  props: UserProfileFormFieldsProps<KcContext, I18n>
 ) {
   const {
     kcContext,
@@ -82,7 +82,21 @@ export default function UserProfileFormFields(
                     htmlFor={attribute.name}
                     className={kcClsx("kcLabelClass")}
                   >
-                    {advancedMsg(attribute.displayName ?? "")}
+                    {(() => {
+                      // Direct mapping for firstName and lastName with hardcoded translations
+                      if (attribute.name === "firstName") {
+                        return kcContext.locale?.currentLanguageTag === "sr"
+                          ? "Ime"
+                          : "First Name";
+                      }
+                      if (attribute.name === "lastName") {
+                        return kcContext.locale?.currentLanguageTag === "sr"
+                          ? "Prezime"
+                          : "Last Name";
+                      }
+                      // Fallback for other attributes
+                      return advancedMsg(attribute.displayName ?? "");
+                    })()}
                   </label>
                   {attribute.required && <> *</>}
                 </div>
@@ -135,7 +149,7 @@ export default function UserProfileFormFields(
               </div>
             </Fragment>
           );
-        },
+        }
       )}
     </>
   );
@@ -164,8 +178,8 @@ function GroupLabel(props: {
           className={kcClsx("kcFormGroupClass")}
           {...Object.fromEntries(
             Object.entries(attribute.group.html5DataAnnotations).map(
-              ([key, value]) => [`data-${key}`, value],
-            ),
+              ([key, value]) => [`data-${key}`, value]
+            )
           )}
         >
           {(() => {
@@ -224,7 +238,7 @@ function FieldErrors(props: {
   const { attribute, fieldIndex, kcClsx } = props;
 
   const displayableErrors = props.displayableErrors.filter(
-    (error) => error.fieldIndex === fieldIndex,
+    (error) => error.fieldIndex === fieldIndex
   );
 
   if (displayableErrors.length === 0) {
@@ -329,7 +343,7 @@ function PasswordWrapper(props: {
         type="button"
         className={kcClsx("kcFormPasswordVisibilityButtonClass")}
         aria-label={msgStr(
-          isPasswordRevealed ? "hidePassword" : "showPassword",
+          isPasswordRevealed ? "hidePassword" : "showPassword"
         )}
         aria-controls={passwordInputId}
         onClick={toggleIsPasswordRevealed}
@@ -338,7 +352,7 @@ function PasswordWrapper(props: {
           className={kcClsx(
             isPasswordRevealed
               ? "kcFormPasswordVisibilityIconHide"
-              : "kcFormPasswordVisibilityIconShow",
+              : "kcFormPasswordVisibilityIconShow"
           )}
           aria-hidden
         />
@@ -348,7 +362,7 @@ function PasswordWrapper(props: {
 }
 
 function InputTag(
-  props: InputFieldByTypeProps & { fieldIndex: number | undefined },
+  props: InputFieldByTypeProps & { fieldIndex: number | undefined }
 ) {
   const {
     attribute,
@@ -419,8 +433,8 @@ function InputTag(
         step={attribute.annotations.inputTypeStep}
         {...Object.fromEntries(
           Object.entries(attribute.html5DataAnnotations ?? {}).map(
-            ([key, value]) => [`data-${key}`, value],
-          ),
+            ([key, value]) => [`data-${key}`, value]
+          )
         )}
         onChange={(event) =>
           dispatchFormAction({
@@ -550,7 +564,7 @@ function InputTagSelects(props: InputFieldByTypeProps) {
 
     assert(
       inputType === "select-radiobuttons" ||
-        inputType === "multiselect-checkboxes",
+        inputType === "multiselect-checkboxes"
     );
 
     switch (inputType) {
@@ -744,7 +758,7 @@ function SelectTag(props: InputFieldByTypeProps) {
           valueOrValues: (() => {
             if (isMultiple) {
               return Array.from(event.target.selectedOptions).map(
-                (option) => option.value,
+                (option) => option.value
               );
             }
 
@@ -811,7 +825,7 @@ function inputLabel(i18n: I18n, attribute: Attribute, option: string) {
 
   if (attribute.annotations.inputOptionLabelsI18nPrefix !== undefined) {
     return advancedMsg(
-      `${attribute.annotations.inputOptionLabelsI18nPrefix}.${option}`,
+      `${attribute.annotations.inputOptionLabelsI18nPrefix}.${option}`
     );
   }
 
