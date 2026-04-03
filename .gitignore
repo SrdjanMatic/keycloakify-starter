@@ -11,6 +11,13 @@
 # production
 /build
 
+#build
+/dist
+/dist_keycloak
+
+#storybook
+/.storybook
+
 # misc
 .DS_Store
 .env.local
@@ -21,3 +28,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#docker
+Dockerfile

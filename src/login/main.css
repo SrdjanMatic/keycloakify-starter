@@ -452,3 +452,87 @@ input[type="checkbox"]:checked::after {
   text-align: right;
   color: #e3e3e3;
 }
+
+/* Floating Label Input */
+.floating-input {
+  position: relative;
+  border: 1px solid #ffffff0d;
+  border-radius: 8px;
+  background: #0c222c;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.floating-input--focused {
+  border-color: #40bbff;
+}
+
+.floating-input--error {
+  border-color: #ec1c24;
+}
+
+.floating-input--disabled {
+  opacity: 0.7;
+}
+
+.floating-input__label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #808283;
+  pointer-events: none;
+  transition: top 0.2s ease, transform 0.2s ease, font-size 0.2s ease,
+    color 0.2s ease;
+  line-height: 1;
+}
+
+.floating-input--active .floating-input__label {
+  top: 10px;
+  transform: translateY(0);
+  font-size: 12px;
+}
+
+.floating-input--focused .floating-input__label {
+  color: #40bbff;
+}
+
+.floating-input__field {
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  padding: 24px 16px 8px 16px;
+  color: #f5f5f5;
+  font-size: 16px;
+  font-weight: 400;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.floating-input__field:disabled {
+  color: #808283;
+  cursor: default;
+}
+
+.floating-input--has-right .floating-input__field {
+  padding-right: 44px;
+}
+
+.floating-input__toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #808283;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}

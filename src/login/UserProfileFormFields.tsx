@@ -1,8 +1,7 @@
-import type { JSX } from "keycloakify/tools/JSX";
-import { useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { assert } from "keycloakify/tools/assert";
-import { useIsPasswordRevealed } from "keycloakify/tools/useIsPasswordRevealed";
 import type { KcClsx } from "keycloakify/login/lib/kcClsx";
+import FloatingLabelInput from "./FloatingLabelInput";
 import {
   useUserProfileForm,
   getButtonToDisplayForMultivaluedAttributeField,
@@ -27,7 +26,7 @@ export default function UserProfileFormFields(
     AfterField,
   } = props;
 
-  const { advancedMsg } = i18n;
+  const { advancedMsg, advancedMsgStr } = i18n;
 
   const {
     formState: { formFieldStates, isFormSubmittable },
@@ -48,6 +47,31 @@ export default function UserProfileFormFields(
     <>
       {formFieldStates.map(
         ({ attribute, displayableErrors, valueOrValues }) => {
+          const labelStr = (() => {
+            if (attribute.name === "firstName") {
+              return kcContext.locale?.currentLanguageTag === "sr"
+                ? "Ime"
+                : "First Name";
+            }
+            if (attribute.name === "lastName") {
+              return kcContext.locale?.currentLanguageTag === "sr"
+                ? "Prezime"
+                : "Last Name";
+            }
+            return advancedMsgStr(attribute.displayName ?? "");
+          })();
+
+          const inputType = attribute.annotations.inputType ?? "text";
+          const isFloatingLabel =
+            ![
+              "hidden",
+              "textarea",
+              "select",
+              "multiselect",
+              "select-radiobuttons",
+              "multiselect-checkboxes",
+            ].includes(inputType) && !(valueOrValues instanceof Array);
+
           return (
             <Fragment key={attribute.name}>
               <GroupLabel
@@ -77,29 +101,17 @@ export default function UserProfileFormFields(
                       : undefined,
                 }}
               >
-                <div className={kcClsx("kcLabelWrapperClass")}>
-                  <label
-                    htmlFor={attribute.name}
-                    className={kcClsx("kcLabelClass")}
-                  >
-                    {(() => {
-                      // Direct mapping for firstName and lastName with hardcoded translations
-                      if (attribute.name === "firstName") {
-                        return kcContext.locale?.currentLanguageTag === "sr"
-                          ? "Ime"
-                          : "First Name";
-                      }
-                      if (attribute.name === "lastName") {
-                        return kcContext.locale?.currentLanguageTag === "sr"
-                          ? "Prezime"
-                          : "Last Name";
-                      }
-                      // Fallback for other attributes
-                      return advancedMsg(attribute.displayName ?? "");
-                    })()}
-                  </label>
-                  {attribute.required && <> *</>}
-                </div>
+                {!isFloatingLabel && (
+                  <div className={kcClsx("kcLabelWrapperClass")}>
+                    <label
+                      htmlFor={attribute.name}
+                      className={kcClsx("kcLabelClass")}
+                    >
+                      {advancedMsg(attribute.displayName ?? "")}
+                    </label>
+                    {attribute.required && <> *</>}
+                  </div>
+                )}
                 <div className={kcClsx("kcInputWrapperClass")}>
                   {attribute.annotations.inputHelperTextBefore !==
                     undefined && (
@@ -118,6 +130,7 @@ export default function UserProfileFormFields(
                     dispatchFormAction={dispatchFormAction}
                     kcClsx={kcClsx}
                     i18n={i18n}
+                    label={labelStr}
                   />
                   <FieldErrors
                     attribute={attribute}
@@ -270,6 +283,7 @@ type InputFieldByTypeProps = {
   dispatchFormAction: React.Dispatch<FormAction>;
   i18n: I18n;
   kcClsx: KcClsx;
+  label: string;
 };
 
 function InputFieldByType(props: InputFieldByTypeProps) {
@@ -301,63 +315,84 @@ function InputFieldByType(props: InputFieldByTypeProps) {
         );
       }
 
-      const inputNode = <InputTag {...props} fieldIndex={undefined} />;
-
       if (
         attribute.name === "password" ||
         attribute.name === "password-confirm"
       ) {
-        return (
-          <PasswordWrapper
-            kcClsx={props.kcClsx}
-            i18n={props.i18n}
-            passwordInputId={attribute.name}
-          >
-            {inputNode}
-          </PasswordWrapper>
-        );
+        return <PasswordFloatingInput {...props} />;
       }
 
-      return inputNode;
+      return <InputTag {...props} fieldIndex={undefined} />;
     }
   }
 }
 
-function PasswordWrapper(props: {
-  kcClsx: KcClsx;
-  i18n: I18n;
-  passwordInputId: string;
-  children: JSX.Element;
-}) {
-  const { kcClsx, i18n, passwordInputId, children } = props;
+function PasswordFloatingInput(props: InputFieldByTypeProps) {
+  const {
+    attribute,
+    dispatchFormAction,
+    valueOrValues,
+    i18n,
+    displayableErrors,
+    kcClsx,
+    label,
+  } = props;
 
   const { msgStr } = i18n;
 
-  const { isPasswordRevealed, toggleIsPasswordRevealed } =
-    useIsPasswordRevealed({ passwordInputId });
+  assert(typeof valueOrValues === "string");
+  const value = valueOrValues;
+  const hasError =
+    displayableErrors.find((e) => e.fieldIndex === undefined) !== undefined;
+
+  const [isPasswordRevealed, setIsPasswordRevealed] = useState(false);
 
   return (
-    <div className={kcClsx("kcInputGroup")}>
-      {children}
-      <button
-        type="button"
-        className={kcClsx("kcFormPasswordVisibilityButtonClass")}
-        aria-label={msgStr(
-          isPasswordRevealed ? "hidePassword" : "showPassword"
-        )}
-        aria-controls={passwordInputId}
-        onClick={toggleIsPasswordRevealed}
-      >
-        <i
-          className={kcClsx(
-            isPasswordRevealed
-              ? "kcFormPasswordVisibilityIconHide"
-              : "kcFormPasswordVisibilityIconShow"
+    <FloatingLabelInput
+      id={attribute.name}
+      name={attribute.name}
+      label={label}
+      value={value}
+      type={isPasswordRevealed ? "text" : "password"}
+      error={hasError}
+      disabled={attribute.readOnly}
+      autoComplete={attribute.autocomplete}
+      aria-invalid={hasError}
+      onChange={(event) =>
+        dispatchFormAction({
+          action: "update",
+          name: attribute.name,
+          valueOrValues: event.target.value,
+        })
+      }
+      onBlur={() =>
+        dispatchFormAction({
+          action: "focus lost",
+          name: attribute.name,
+          fieldIndex: undefined,
+        })
+      }
+      rightElement={
+        <button
+          type="button"
+          className="floating-input__toggle"
+          aria-label={msgStr(
+            isPasswordRevealed ? "hidePassword" : "showPassword"
           )}
-          aria-hidden
-        />
-      </button>
-    </div>
+          aria-controls={attribute.name}
+          onClick={() => setIsPasswordRevealed((v) => !v)}
+        >
+          <i
+            className={kcClsx(
+              isPasswordRevealed
+                ? "kcFormPasswordVisibilityIconHide"
+                : "kcFormPasswordVisibilityIconShow"
+            )}
+            aria-hidden
+          />
+        </button>
+      }
+    />
   );
 }
 
@@ -372,39 +407,88 @@ function InputTag(
     valueOrValues,
     i18n,
     displayableErrors,
+    label,
   } = props;
 
   const { advancedMsgStr } = i18n;
 
+  const inputType = (() => {
+    const { inputType } = attribute.annotations;
+    if (inputType?.startsWith("html5-")) return inputType.slice(6);
+    return inputType ?? "text";
+  })();
+
+  const hasError =
+    displayableErrors.find((error) => error.fieldIndex === fieldIndex) !==
+    undefined;
+
+  // Single-value text inputs use FloatingLabelInput
+  if (fieldIndex === undefined) {
+    assert(typeof valueOrValues === "string");
+
+    return (
+      <FloatingLabelInput
+        id={attribute.name}
+        name={attribute.name}
+        label={label}
+        value={valueOrValues}
+        type={inputType}
+        error={hasError}
+        disabled={attribute.readOnly}
+        autoComplete={attribute.autocomplete}
+        aria-invalid={hasError}
+        placeholder={
+          attribute.annotations.inputTypePlaceholder === undefined
+            ? undefined
+            : advancedMsgStr(attribute.annotations.inputTypePlaceholder)
+        }
+        pattern={attribute.annotations.inputTypePattern}
+        maxLength={
+          attribute.annotations.inputTypeMaxlength === undefined
+            ? undefined
+            : parseInt(`${attribute.annotations.inputTypeMaxlength}`)
+        }
+        minLength={
+          attribute.annotations.inputTypeMinlength === undefined
+            ? undefined
+            : parseInt(`${attribute.annotations.inputTypeMinlength}`)
+        }
+        {...Object.fromEntries(
+          Object.entries(attribute.html5DataAnnotations ?? {}).map(
+            ([key, value]) => [`data-${key}`, value]
+          )
+        )}
+        onChange={(event) =>
+          dispatchFormAction({
+            action: "update",
+            name: attribute.name,
+            valueOrValues: event.target.value,
+          })
+        }
+        onBlur={() =>
+          dispatchFormAction({
+            action: "focus lost",
+            name: attribute.name,
+            fieldIndex: undefined,
+          })
+        }
+      />
+    );
+  }
+
+  // Multi-valued inputs keep the standard <input> rendering
+  assert(valueOrValues instanceof Array);
+  const values = valueOrValues;
+
   return (
     <>
       <input
-        type={(() => {
-          const { inputType } = attribute.annotations;
-
-          if (inputType?.startsWith("html5-")) {
-            return inputType.slice(6);
-          }
-
-          return inputType ?? "text";
-        })()}
+        type={inputType}
         id={attribute.name}
         name={attribute.name}
-        value={(() => {
-          if (fieldIndex !== undefined) {
-            assert(valueOrValues instanceof Array);
-            return valueOrValues[fieldIndex];
-          }
-
-          assert(typeof valueOrValues === "string");
-
-          return valueOrValues;
-        })()}
+        value={values[fieldIndex]}
         className={kcClsx("kcInputClass")}
-        aria-invalid={
-          displayableErrors.find((error) => error.fieldIndex === fieldIndex) !==
-          undefined
-        }
+        aria-invalid={hasError}
         disabled={attribute.readOnly}
         autoComplete={attribute.autocomplete}
         placeholder={
@@ -440,21 +524,9 @@ function InputTag(
           dispatchFormAction({
             action: "update",
             name: attribute.name,
-            valueOrValues: (() => {
-              if (fieldIndex !== undefined) {
-                assert(valueOrValues instanceof Array);
-
-                return valueOrValues.map((value, i) => {
-                  if (i === fieldIndex) {
-                    return event.target.value;
-                  }
-
-                  return value;
-                });
-              }
-
-              return event.target.value;
-            })(),
+            valueOrValues: values.map((v, i) =>
+              i === fieldIndex ? event.target.value : v
+            ),
           })
         }
         onBlur={() =>
@@ -465,33 +537,19 @@ function InputTag(
           })
         }
       />
-      {(() => {
-        if (fieldIndex === undefined) {
-          return null;
-        }
-
-        assert(valueOrValues instanceof Array);
-
-        const values = valueOrValues;
-
-        return (
-          <>
-            <FieldErrors
-              attribute={attribute}
-              kcClsx={kcClsx}
-              displayableErrors={displayableErrors}
-              fieldIndex={fieldIndex}
-            />
-            <AddRemoveButtonsMultiValuedAttribute
-              attribute={attribute}
-              values={values}
-              fieldIndex={fieldIndex}
-              dispatchFormAction={dispatchFormAction}
-              i18n={i18n}
-            />
-          </>
-        );
-      })()}
+      <FieldErrors
+        attribute={attribute}
+        kcClsx={kcClsx}
+        displayableErrors={displayableErrors}
+        fieldIndex={fieldIndex}
+      />
+      <AddRemoveButtonsMultiValuedAttribute
+        attribute={attribute}
+        values={values}
+        fieldIndex={fieldIndex}
+        dispatchFormAction={dispatchFormAction}
+        i18n={i18n}
+      />
     </>
   );
 }

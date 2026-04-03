@@ -14,7 +14,7 @@ const { useI18n, ofTypeI18n } = i18nBuilder
   })
   .withCustomTranslations({
     en: {
-      loginHeaderTitle: "Good to see you 👋",
+      loginHeaderTitle: "Good to see you1 👋",
       loginHeaderDescription: "Sign in for exclusive rewards.",
       registerHeaderTitle: "Welcome! 🎉",
       registerHeaderDescription: "Create your account to get started.",
