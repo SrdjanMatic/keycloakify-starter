@@ -8,18 +8,14 @@ import "./main.css";
 import Register from "./pages/Register";
 const UserProfileFormFields = lazy(() => import("./UserProfileFormFields"));
 const Login = lazy(() => import("./pages/Login"));
+const LoginResetPassword = lazy(() => import("./pages/LoginResetPassword"));
 const doMakeUserConfirmPassword = true;
 
 export default function KcPage(props: { kcContext: KcContext }) {
   const { kcContext: originalKcContext } = props;
 
-  // Get language from localStorage, default to "en"
-  const selectedLanguage =
-    typeof window !== "undefined"
-      ? localStorage.getItem("selectedLanguage") || "en"
-      : "en";
+  const selectedLanguage = originalKcContext.locale?.currentLanguageTag || "en";
 
-  // Modify kcContext to use the selected language
   const kcContext = {
     ...originalKcContext,
     locale: {
@@ -37,6 +33,16 @@ export default function KcPage(props: { kcContext: KcContext }) {
           case "login.ftl":
             return (
               <Login
+                kcContext={kcContext}
+                i18n={i18n}
+                Template={Template}
+                doUseDefaultCss={true}
+                classes={classes}
+              />
+            );
+          case "login-reset-password.ftl":
+            return (
+              <LoginResetPassword
                 kcContext={kcContext}
                 i18n={i18n}
                 Template={Template}

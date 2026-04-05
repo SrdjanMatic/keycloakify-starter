@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap");
+
 /* Dark theme colors and layout */
 :root {
   --dark-bg: #08171e;
@@ -14,8 +16,8 @@
 body {
   background-color: var(--dark-bg) !important;
   color: var(--text-primary) !important;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif !important;
+  font-family: "Host Grotesk", sans-serif !important;
+  overflow-x: hidden;
 }
 
 a {
@@ -184,14 +186,13 @@ a {
 }
 
 .forgot-password-link {
-  color: var(--text-primary);
   text-decoration: none;
   font-family: Host Grotesk;
   font-weight: 500;
   font-size: 11px;
   line-height: 100%;
   text-align: right;
-  color: #e3e3e3;
+  color: #e3e3e3 !important;
 }
 
 .forgot-password-link:hover {
@@ -485,7 +486,10 @@ input[type="checkbox"]:checked::after {
   font-size: 16px;
   color: #808283;
   pointer-events: none;
-  transition: top 0.2s ease, transform 0.2s ease, font-size 0.2s ease,
+  transition:
+    top 0.2s ease,
+    transform 0.2s ease,
+    font-size 0.2s ease,
     color 0.2s ease;
   line-height: 1;
 }

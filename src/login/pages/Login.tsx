@@ -11,6 +11,7 @@ import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
 import { useScript } from "keycloakify/login/pages/Login.useScript";
 import FloatingLabelInput from "../FloatingLabelInput";
+import googleIcon from "../assets/image/GoogleIcon.svg";
 
 export default function Login(
   props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>,
@@ -76,28 +77,9 @@ export default function Login(
       displayMessage={!messagesPerField.existsError("username", "password")}
       headerNode={
         <>
-          <h1 className="login-greeting">Good to see you2 👋</h1>
-          <p className="login-subtitle">Sign in for exclusive rewards.</p>
+          <h1 className="login-greeting"> {msg("loginHeaderTitle")}</h1>
+          <p className="login-subtitle">{msg("loginHeaderDescription")}</p>
         </>
-      }
-      displayInfo={
-        realm.password && realm.registrationAllowed && !registrationDisabled
-      }
-      infoNode={
-        <div id="kc-registration-container" className="signup-container">
-          <div id="kc-registration">
-            <span className="signup-text">
-              {msg("dontHaveAccount")}{" "}
-              <a
-                tabIndex={8}
-                href={url.registrationUrl}
-                className="signup-link"
-              >
-                {msg("signUp")}
-              </a>
-            </span>
-          </div>
-        </div>
       }
       socialProvidersNode={
         <>
@@ -126,19 +108,23 @@ export default function Login(
                         type="button"
                         href={p.loginUrl}
                       >
-                        {p.iconClasses && (
-                          <i
-                            className={clsx(
-                              kcClsx("kcCommonLogoIdP"),
-                              p.iconClasses,
-                            )}
-                            aria-hidden="true"
-                          ></i>
+                        {p.alias === "google" ? (
+                          <img src={googleIcon} alt="Google" width={18} height={18} aria-hidden="true" />
+                        ) : (
+                          p.iconClasses && (
+                            <i
+                              className={clsx(
+                                kcClsx("kcCommonLogoIdP"),
+                                p.iconClasses,
+                              )}
+                              aria-hidden="true"
+                            ></i>
+                          )
                         )}
                         <span
                           className="social-provider-text"
                           dangerouslySetInnerHTML={{
-                            __html: kcSanitize(p.displayName),
+                            __html: kcSanitize(msgStr("continueWithProvider", p.displayName)),
                           }}
                         ></span>
                       </a>
@@ -274,6 +260,23 @@ export default function Login(
                   )}
                 </div>
               </div>
+
+              {realm.password && realm.registrationAllowed && !registrationDisabled && (
+                <div id="kc-registration-container" className="signup-container">
+                  <div id="kc-registration">
+                    <span className="signup-text">
+                      {msg("dontHaveAccount")}{" "}
+                      <a
+                        tabIndex={8}
+                        href={url.registrationUrl}
+                        className="signup-link"
+                      >
+                        {msg("signUp")}
+                      </a>
+                    </span>
+                  </div>
+                </div>
+              )}
 
               <div id="kc-form-buttons" className={kcClsx("kcFormGroupClass")}>
                 <input

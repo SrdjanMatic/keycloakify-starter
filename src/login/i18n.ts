@@ -14,7 +14,7 @@ const { useI18n, ofTypeI18n } = i18nBuilder
   })
   .withCustomTranslations({
     en: {
-      loginHeaderTitle: "Good to see you1 👋",
+      loginHeaderTitle: "Good to see you 👋",
       loginHeaderDescription: "Sign in for exclusive rewards.",
       registerHeaderTitle: "Welcome! 🎉",
       registerHeaderDescription: "Create your account to get started.",
@@ -26,6 +26,7 @@ const { useI18n, ofTypeI18n } = i18nBuilder
       signUp: "Sign up",
       orDivider: "OR",
       continueButton: "Continue",
+      continueWithProvider: "Continue with {0}",
       firstName: "First Name",
       lastName: "Last Name",
     },
@@ -43,6 +44,7 @@ const { useI18n, ofTypeI18n } = i18nBuilder
       signUp: "Registruj se",
       orDivider: "ILI",
       continueButton: "Nastavi",
+      continueWithProvider: "Nastavi sa {0}",
       firstName: "Ime",
       lastName: "Prezime",
     },
