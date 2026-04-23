@@ -12,6 +12,7 @@ import type { I18n } from "../i18n";
 import { useScript } from "keycloakify/login/pages/Login.useScript";
 import FloatingLabelInput from "../FloatingLabelInput";
 import googleIcon from "../assets/image/GoogleIcon.svg";
+import appleIcon from "../assets/image/AppleLogo.svg";
 
 export default function Login(
   props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>,
@@ -110,6 +111,8 @@ export default function Login(
                       >
                         {p.alias === "google" ? (
                           <img src={googleIcon} alt="Google" width={18} height={18} aria-hidden="true" />
+                        ) : p.alias.toLowerCase() === "apple" ? (
+                          <img src={appleIcon} alt="Apple" width={18} height={18} aria-hidden="true" />
                         ) : (
                           p.iconClasses && (
                             <i
