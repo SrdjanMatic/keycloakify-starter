@@ -380,3 +380,19 @@ export const WithAuthPassKey: Story = {
     />
   ),
 };
+
+/**
+ * DesktopAdminTheme:
+ * - Purpose: Preview the "LoyalEatyAdmin" desktop theme (used for the admin portal).
+ * - Renders LoginDesktop + TemplateDesktop instead of the mobile Login + Template,
+ *   selected automatically in KcPage.tsx based on kcContext.themeName.
+ */
+export const DesktopAdminTheme: Story = {
+  render: () => (
+    <KcPageStory
+      kcContext={{
+        themeName: "LoyalEatyAdmin",
+      }}
+    />
+  ),
+};

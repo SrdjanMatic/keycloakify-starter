@@ -6,8 +6,10 @@ import DefaultPage from "keycloakify/login/DefaultPage";
 import Template from "./Template";
 import "./main.css";
 import Register from "./pages/Register";
+import TemplateDesktop from "./TemplateDesktop";
 const UserProfileFormFields = lazy(() => import("./UserProfileFormFields"));
 const Login = lazy(() => import("./pages/Login"));
+const LoginDesktop = lazy(() => import("./pages/LoginDesktop"));
 const LoginResetPassword = lazy(() => import("./pages/LoginResetPassword"));
 const doMakeUserConfirmPassword = true;
 
@@ -31,7 +33,15 @@ export default function KcPage(props: { kcContext: KcContext }) {
       {(() => {
         switch (kcContext.pageId) {
           case "login.ftl":
-            return (
+            return kcContext.themeName === "LoyalEatyAdmin" ? (
+              <LoginDesktop
+                kcContext={kcContext}
+                i18n={i18n}
+                Template={TemplateDesktop}
+                doUseDefaultCss={true}
+                classes={classes}
+              />
+            ) : (
               <Login
                 kcContext={kcContext}
                 i18n={i18n}

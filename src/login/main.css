@@ -571,3 +571,16 @@ input[type="checkbox"]:checked::after {
   display: flex;
   align-items: center;
 }
+
+.desktop-admin-login {
+  justify-content: center !important;
+  align-items: center !important;
+  padding-top: 0 !important;
+}
+
+.desktop-admin-card {
+  background-color: #0c222c !important;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  padding: 36px 32px;
+}
